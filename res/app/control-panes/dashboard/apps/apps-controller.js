@@ -1,12 +1,6 @@
 // See https://github.com/android/platform_packages_apps_settings/blob/master/AndroidManifest.xml
-var io = require('socket.io')
 
-module.exports = function ShellCtrl($scope, AppState) {
-  var websocketUrl = AppState.config.websocketUrl || ''
-  var socket = io(websocketUrl, {
-    reconnection: false, transports: ['websocket']
-  })
-
+module.exports = function ShellCtrl($scope) {
   $scope.result = null
 
   var run = function(cmd) {
@@ -23,15 +17,12 @@ module.exports = function ShellCtrl($scope, AppState) {
   // TODO: Android 2.x doesn't support openSetting(), account for that on the UI
 
   function openSetting(activity) {
-    socket.emit('openSettings', {data: 'somedate'})
     run('am start -a android.intent.action.MAIN -n com.android.settings/.Settings\\$' +
     activity)
   }
 
   $scope.openSettings = function() {
-    socket.emit('openSettings', {data: 'somedate'})
     run('am start -a android.intent.action.MAIN -n com.android.settings/.Settings')
-    $scope.control.openSettings()
   }
 
   $scope.openWiFiSettings = function() {
@@ -56,8 +47,6 @@ module.exports = function ShellCtrl($scope, AppState) {
   }
 
   $scope.openManageApps = function() {
-    console.log('openManageApps')
-    socket.emit('manageOptions', {data: 'manageOptions'})
     //openSetting('ManageApplicationsActivity')
     run('am start -a android.settings.APPLICATION_SETTINGS')
   }
@@ -69,11 +58,6 @@ module.exports = function ShellCtrl($scope, AppState) {
   $scope.openDeveloperSettings = function() {
     openSetting('DevelopmentSettingsActivity')
   }
-
-  $scope.$on('$destroy', function() {
-    socket.close()
-    socket = null
-  })
 
   $scope.clear = function() {
     $scope.command = ''

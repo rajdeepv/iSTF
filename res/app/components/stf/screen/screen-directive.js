@@ -9,7 +9,6 @@ module.exports = function DeviceScreenDirective(
 , PageVisibilityService
 , $timeout
 , $window
-, TemporarilyUnavialableService
 ) {
   return {
     restrict: 'E'
@@ -60,18 +59,14 @@ module.exports = function DeviceScreenDirective(
         }
 
         var ws = new WebSocket(device.display.url)
-
         ws.binaryType = 'blob'
 
-        ws.onerror = function errorListener(event) {
+        ws.onerror = function errorListener() {
           // @todo Handle
-          console.log('errorListener', event)
         }
 
-        ws.onclose = function closeListener(event) {
+        ws.onclose = function closeListener() {
           // @todo Maybe handle
-          console.log('closeListener', event)
-          TemporarilyUnavialableService.open('Service is currently unavailable! Try your attempt later.')
         }
 
         ws.onopen = function openListener() {
@@ -118,6 +113,7 @@ module.exports = function DeviceScreenDirective(
               sw *= f / sw
               sh *= f / sh
             }
+
             return {
               w: Math.ceil(sw)
             , h: Math.ceil(sh)
@@ -268,6 +264,7 @@ module.exports = function DeviceScreenDirective(
             cachedScreen.rotation = screen.rotation
 
             canvasAspect = canvas.width / canvas.height
+
             if (isRotated() && !alwaysUpright) {
               canvasAspect = img.height / img.width
               element[0].classList.add('rotated')
@@ -297,8 +294,6 @@ module.exports = function DeviceScreenDirective(
                     scope.displayError = false
                   })
                 }
-
-                scope.$emit('hide-screen-loader')
 
                 var blob = new Blob([message.data], {
                   type: 'image/jpeg'
@@ -372,7 +367,6 @@ module.exports = function DeviceScreenDirective(
         })
 
         scope.$on('guest-landscape', function() {
-          console.log('rotate gues-landscape : 90')
           control.rotate(90)
         })
 
@@ -516,7 +510,6 @@ module.exports = function DeviceScreenDirective(
        * as possible.
        */
       ;(function() {
-        var prevCoords = {}
         var slots = []
         var slotted = Object.create(null)
         var fingers = []
@@ -585,6 +578,7 @@ module.exports = function DeviceScreenDirective(
           if (e.originalEvent) {
             e = e.originalEvent
           }
+
           // Skip secondary click
           if (e.which === 3) {
             return
@@ -607,27 +601,13 @@ module.exports = function DeviceScreenDirective(
               , y
               , screen.rotation
               )
-          prevCoords = {
-            x: scaled.xP,
-            par: 0,
-            y: scaled.yP,
-            presure: pressure,
-            seq: nextSeq(),
-          }
-          if( device.ios && device.ios === true ) {
-             control.touchDownIos(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-            if (fakePinch) {
-              control.touchDownIos(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
-                pressure)
-            }
-          } else {
-            control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-            if (fakePinch) {
-              control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
-                pressure)
-            }
-          }
 
+          control.touchDown(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
+
+          if (fakePinch) {
+            control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP,
+              pressure)
+          }
 
           control.touchCommit(nextSeq())
 
@@ -682,22 +662,15 @@ module.exports = function DeviceScreenDirective(
               )
 
           control.touchMove(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
-          //control.touchMoveIos(nextSeq(), 0, scaled.xP, scaled.yP, pressure)
 
           if (addGhostFinger) {
-            if ( device.ios && device.ios === true) {
-              control.touchDownIos(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP, pressure)
-            } else {
-              control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP, pressure)
-            }
-
+            control.touchDown(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP, pressure)
           }
           else if (deleteGhostFinger) {
             control.touchUp(nextSeq(), 1)
           }
           else if (fakePinch) {
             control.touchMove(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP, pressure)
-            //control.touchMoveIos(nextSeq(), 1, 1 - scaled.xP, 1 - scaled.yP, pressure)
           }
 
           control.touchCommit(nextSeq())
@@ -724,20 +697,6 @@ module.exports = function DeviceScreenDirective(
             return
           }
           e.preventDefault()
-          var x = e.pageX - screen.bounds.x
-          var y = e.pageY - screen.bounds.y
-          var pressure = 0.5
-          var scaled = scaler.coords(
-            screen.bounds.w
-            , screen.bounds.h
-            , x
-            , y
-            , screen.rotation
-          )
-
-          if ((Math.abs(prevCoords.x - scaled.xP) >= 0.1 || Math.abs(prevCoords.y - scaled.yP) >= 0.1) && device.ios && device.ios === true) {
-            control.touchMoveIos(scaled.xP, scaled.yP, prevCoords.x, prevCoords.y, pressure, nextSeq(), 0)
-          }
 
           control.touchUp(nextSeq(), 0)
 
@@ -883,11 +842,7 @@ module.exports = function DeviceScreenDirective(
                 )
 
             slotted[touch.identifier] = slot
-            if ( device.ios && device.ios === true) {
-              control.touchDownIos(nextSeq(), slot, scaled.xP, scaled.yP, pressure)
-            } else {
-              control.touchDown(nextSeq(), slot, scaled.xP, scaled.yP, pressure)
-            }
+            control.touchDown(nextSeq(), slot, scaled.xP, scaled.yP, pressure)
             activateFinger(slot, x, y, pressure)
           }
 
@@ -921,7 +876,6 @@ module.exports = function DeviceScreenDirective(
                 )
 
             control.touchMove(nextSeq(), slot, scaled.xP, scaled.yP, pressure)
-            //control.touchMoveIos(nextSeq(), slot, scaled.xP, scaled.yP, pressure)
             activateFinger(slot, x, y, pressure)
           }
 

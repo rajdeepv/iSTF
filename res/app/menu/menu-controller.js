@@ -40,7 +40,7 @@ module.exports = function MenuCtrl(
     $cookies.remove('XSRF-TOKEN', {path: '/'})
     $cookies.remove('ssid', {path: '/'})
     $cookies.remove('ssid.sig', {path: '/'})
-    $window.location = '/stf'
+    $window.location = '/'
     setTimeout(function() {
       socket.disconnect()
     }, 100)

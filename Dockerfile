@@ -28,7 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get -y install wget python build-essential && \
     cd /tmp && \
     wget --progress=dot:mega \
-      https://nodejs.org/dist/v8.12.0/node-v8.12.0-linux-x64.tar.xz && \
+      https://nodejs.org/dist/v8.9.3/node-v8.9.3-linux-x64.tar.xz && \
     tar -xJf node-v*.tar.xz --strip-components 1 -C /usr/local && \
     rm node-v*.tar.xz && \
     su stf-build -s /bin/bash -c '/usr/local/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js install' && \
@@ -41,9 +41,7 @@ COPY . /tmp/build/
 
 # Give permissions to our build user.
 RUN mkdir -p /app && \
-    mkdir -p /data && \
-    chown -R stf-build:stf-build /tmp/build /app && \
-    chown -R stf:stf /data
+    chown -R stf-build:stf-build /tmp/build /app
 
 # Switch over to the build user.
 USER stf-build
@@ -56,7 +54,6 @@ RUN set -x && \
     npm pack && \
     tar xzf devicefarmer-stf-*.tgz --strip-components 1 -C /app && \
     bower cache clean && \
-    npm install rimraf && \
     npm prune --production && \
     mv node_modules /app && \
     rm -rf ~/.node-gyp && \

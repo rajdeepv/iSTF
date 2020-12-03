@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.3 (2020-07-21)
+
+### Misc
+
+- Changed dependencies to equivalents using **@devicefarmer** scope
+
 ## 3.4.2 (2020-05-31)
 
 ### Fixes
@@ -77,6 +83,10 @@
 - The `--mute-master` option now accepts the values `never` (default), `inuse` (only when a device is being used), and `always` (mute pre-emptively during setup phase). For backwards compatibility, `--mute-master` with no value maps to `inuse`, and `--no-mute-master` to `never`.
 - The battery level and battery temperature columns are now filterable with comparison operators.
 - Log output now includes a timestamp.
+
+### Fixes
+
+- Fixed an issue on Windows where our device binaries may have failed to install due to an `Out of fallback locations` error caused by a faulty mode check. Thanks @iqianxing!
 
 ## 3.1.0 (2017-08-31)
 

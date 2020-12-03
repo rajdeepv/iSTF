@@ -358,6 +358,7 @@ module.exports = function DeviceListDetailsDirective(
         var td
 
         tr.id = id
+
         if (!device.usable) {
           tr.classList.add('device-not-usable')
         }
@@ -411,7 +412,7 @@ module.exports = function DeviceListDetailsDirective(
         var id = calculateId(device)
 
         tr.id = id
-        console.log('device-list-details-directive',device.usable)
+
         if (!device.usable) {
           tr.classList.add('device-not-usable')
         }

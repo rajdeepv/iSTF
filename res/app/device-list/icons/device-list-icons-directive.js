@@ -86,11 +86,11 @@ module.exports = function DeviceListIconsDirective(
         }
 
         if (device.usable && !device.using) {
-          a.href = 'stf#!/control/' + device.serial
+          a.href = '#!/control/' + device.serial
           li.classList.remove('device-is-busy')
         }
         else if (device.using && device.usable) {
-          a.href = 'stf#!/control/' + device.serial
+          a.href = '#!/control/' + device.serial
         }
         else {
           a.removeAttribute('href')
@@ -135,7 +135,6 @@ module.exports = function DeviceListIconsDirective(
       }
 
       function inviteDevice(device) {
-        console.log('device-list-icons-directive.js , InviteDevice',device)
         return GroupService.invite(device).then(function() {
           scope.$digest()
         })
