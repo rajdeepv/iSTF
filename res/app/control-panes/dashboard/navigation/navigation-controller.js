@@ -37,9 +37,9 @@ module.exports = function NavigationCtrl($scope, $rootScope) {
     $scope.blurUrl = true
     $rootScope.screenFocus = true
 
-    var url = addHttp($scope.textURL)
+    var url = $scope.textURL
     setUrlFavicon(url)
-    return $scope.control.openBrowser(url, $scope.browser)
+    return $scope.control.type(url)
   }
 
   function setCurrentBrowser(browser) {

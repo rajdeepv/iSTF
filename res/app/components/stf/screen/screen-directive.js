@@ -495,7 +495,7 @@ module.exports = function DeviceScreenDirective(
           // you use the "Romaji" Kotoeri input method, we'll never get any
           // keypress events. It also causes us to lose the very first keypress
           // on the page. Currently I'm not sure if we can fix that one.
-          control.type(this.value)
+          // control.type(this.value)
           this.value = ''
         }
 
