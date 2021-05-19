@@ -4,19 +4,19 @@
       .stf-vnc-navbar.as-row(ng-show='!$root.basicMode && !$root.standalone')
         .stf-vnc-control-header.as-cell
           .stf-vnc-right-buttons.pull-right
-            .btn-group
-              label.btn-sm.btn-primary-outline(type='button', ng-click='tryToRotate("portrait")',
-              ng-model='currentRotation', uib-btn-radio='"portrait"',
-              uib-tooltip='{{ "Portrait" | translate }} ({{ "Current rotation:" | translate }} {{ device.display.rotation }}°)', tooltip-placement='bottom').pointer
-                i.fa.fa-mobile
-              label.btn-sm.btn-primary-outline(type='button', ng-click='tryToRotate("landscape")',
-                ng-model='currentRotation', uib-btn-radio='"landscape"',
-              uib-tooltip='{{ "Landscape" | translate }} ({{ "Current rotation:" | translate }} {{ device.display.rotation }}°)', tooltip-placement='bottom').pointer
-                i.fa.fa-mobile.fa-rotate-90
-            .button-spacer
-            button(type='button', ng-model='showScreen', uib-btn-checkbox).btn.btn-xs.btn-info
-              i(ng-show='showScreen', uib-tooltip='{{"Hide Screen"|translate}}', tooltip-placement='bottom').fa.fa-eye
-              i(ng-show='!showScreen', uib-tooltip='{{"Show Screen"|translate}}', tooltip-placement='bottom').fa.fa-eye-slash
+            //- .btn-group
+            //-   label.btn-sm.btn-primary-outline(type='button', ng-click='tryToRotate("portrait")',
+            //-   ng-model='currentRotation', uib-btn-radio='"portrait"',
+            //-   uib-tooltip='{{ "Portrait" | translate }} ({{ "Current rotation:" | translate }} {{ device.display.rotation }}°)', tooltip-placement='bottom').pointer
+            //-     i.fa.fa-mobile
+            //-   label.btn-sm.btn-primary-outline(type='button', ng-click='tryToRotate("landscape")',
+            //-     ng-model='currentRotation', uib-btn-radio='"landscape"',
+            //-   uib-tooltip='{{ "Landscape" | translate }} ({{ "Current rotation:" | translate }} {{ device.display.rotation }}°)', tooltip-placement='bottom').pointer
+            //-     i.fa.fa-mobile.fa-rotate-90
+            //- .button-spacer
+            //- button(type='button', ng-model='showScreen', uib-btn-checkbox).btn.btn-xs.btn-info
+            //-   i(ng-show='showScreen', uib-tooltip='{{"Hide Screen"|translate}}', tooltip-placement='bottom').fa.fa-eye
+            //-   i(ng-show='!showScreen', uib-tooltip='{{"Show Screen"|translate}}', tooltip-placement='bottom').fa.fa-eye-slash
             button(type='button', ng-click='kickDevice(device); $event.stopPropagation()', uib-tooltip='{{"Stop Using"|translate}}', tooltip-placement='bottom').btn.btn-sm.btn-danger-outline
               i.fa.fa-times
 
